@@ -17,6 +17,6 @@ namespace proOfficeTask.Models
         public string UserName { get; set; }
         public string Password { get; set; }
 
-        public ICollection<TblDocument> TblDocument { get; set; }
+        public virtual ICollection<TblDocument> TblDocument { get; set; }
     }
 }

@@ -11,6 +11,6 @@ namespace proOfficeTask.Models
         public DateTime? Downloaded { get; set; }
 
         public TblProduct Product { get; set; }
-        public TblDocumentData TblDocumentData { get; set; }
+        public virtual TblDocumentData TblDocumentData { get; set; }
     }
 }

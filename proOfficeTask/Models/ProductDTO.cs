@@ -13,6 +13,6 @@ namespace proOfficeTask.Models
         public string Url { get; set; }
         public Guid? IdDoc { get; set; }
         public string Type { get; set; }
-        public string Downloaded { get; set; }
+        public DateTime? Downloaded { get; set; }
     }
 }

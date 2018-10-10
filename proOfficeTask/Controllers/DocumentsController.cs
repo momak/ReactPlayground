@@ -14,10 +14,14 @@ namespace proOfficeTask.Controllers
     public class DocumentsController : Controller
     {
         private readonly ProOfficeTaskDBContext _dbContext;
+        private readonly IDownload _download;
+        private readonly IFilesRepository _files;
 
-        public DocumentsController(ProOfficeTaskDBContext context)
+        public DocumentsController(ProOfficeTaskDBContext context, IDownload download, IFilesRepository files)
         {
             _dbContext = context;
+            _download = download;
+            _files = files;
         }
 
         // GET: api/Docs/GetProducts
@@ -41,7 +45,7 @@ namespace proOfficeTask.Controllers
                         Url = p.Url,
                         IdDoc = p.TblDocument.FirstOrDefault(d => d.ProductId == p.IdProduct).IdDoc,
                         Type = p.TblDocument.FirstOrDefault(d => d.ProductId == p.IdProduct).Type,
-                        Downloaded = p.TblDocument.FirstOrDefault(d => d.ProductId == p.IdProduct).Downloaded.ToString()
+                        Downloaded = p.TblDocument.FirstOrDefault(d => d.ProductId == p.IdProduct).Downloaded
 
                     }).ToListAsync();
                     return Ok(dbResponse);
@@ -75,7 +79,7 @@ namespace proOfficeTask.Controllers
                             Url = p.Url,
                             IdDoc = p.TblDocument.FirstOrDefault(d => d.ProductId == p.IdProduct).IdDoc,
                             Type = p.TblDocument.FirstOrDefault(d => d.ProductId == p.IdProduct).Type,
-                            Downloaded = p.TblDocument.FirstOrDefault(d => d.ProductId == p.IdProduct).Downloaded.ToString()
+                            Downloaded = p.TblDocument.FirstOrDefault(d => d.ProductId == p.IdProduct).Downloaded
 
                         }).FirstOrDefaultAsync(tblP => (tblP.IdProduct).ToString() == id);
 
@@ -133,16 +137,18 @@ namespace proOfficeTask.Controllers
                 try
                 {
                     var tblProduct = await _dbContext.TblProduct
+                        .Include(tblP => tblP.TblDocument)
+                            .ThenInclude(tblD => tblD.TblDocumentData)
                         .FirstOrDefaultAsync(tblP => (tblP.IdProduct).ToString() == id);
 
-                    var contentType = FilesHelper.GetContentType(tblProduct.Url);
-                    var fileName = FilesHelper.GetFileName(tblProduct.Url);
+                    var contentType = _files.GetContentType(tblProduct.Url);
+                    var fileName = _files.GetFileName(tblProduct.Url);
                     MemoryStream content;
 
-                    var tblDocument = await _dbContext.TblDocument.FirstOrDefaultAsync(d => d.ProductId == tblProduct.IdProduct);
+                    var tblDocument = tblProduct.TblDocument.FirstOrDefault();//await _dbContext.TblDocument.FirstOrDefaultAsync(d => d.ProductId == tblProduct.IdProduct);
                     if (tblDocument == null)
                     {//no downloaded file
-                        content = await DownloadHelper.GetContent(tblProduct.Url);
+                        content = await _download.GetContent(tblProduct.Url);
                         TblDocumentData tblData = new TblDocumentData
                         {
                             IdDocument = Guid.NewGuid(),
@@ -165,13 +171,14 @@ namespace proOfficeTask.Controllers
                     }
                     else
                     {//previous downloaded file
-                        var tblData = await _dbContext.TblDocumentData
-                            .FirstOrDefaultAsync(d => d.IdDocument == tblDocument.IdDoc);
+                        var tblData = tblDocument.TblDocumentData;
+                        //var tblData = await _dbContext.TblDocumentData
+                        //    .FirstOrDefaultAsync(d => d.IdDocument == tblDocument.IdDoc);
                         if ((tblDocument.Downloaded.HasValue)
                             && (tblDocument.Downloaded.Value <= DateTime.Now.AddDays(-3)))
                         {//older than 3 days
-                            content = await DownloadHelper.GetContent(tblProduct.Url);
-                            
+                            content = await _download.GetContent(tblProduct.Url);
+
                             tblDocument.Downloaded = DateTime.Now;
                             tblDocument.Type = contentType;
 

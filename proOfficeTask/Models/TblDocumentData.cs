@@ -8,6 +8,6 @@ namespace proOfficeTask.Models
         public Guid IdDocument { get; set; }
         public byte[] BinaryData { get; set; }
 
-        public TblDocument IdDocumentNavigation { get; set; }
+        public virtual TblDocument IdDocumentNavigation { get; set; }
     }
 }

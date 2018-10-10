@@ -25,7 +25,16 @@ namespace proOfficeTask
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSingleton<IConfiguration>(Configuration);
+                
+
+
+            //services.Add(new ServiceDescriptor(typeof(IDownload), typeof(DownloadHelper),ServiceLifetime.Singleton));
+            services.AddTransient<IDownload, DownloadHelper>();
+            services.AddTransient<IFilesRepository, FilesHelper>();
+            //services.Add(new ServiceDescriptor(typeof(IFilesRepository), typeof(FilesHelper)));
+
             services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
+
             services.AddDbContext<ProOfficeTaskDBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 

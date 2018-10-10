@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace proOfficeTask.Helpers
 {
-    public static class FilesHelper
+    public class FilesHelper : IFilesRepository
     {
-        public static string GetContentType(string path)
+        public string GetContentType(string path)
         {
             var types = GetMimeTypes();
             var ext = Path.GetExtension(path).ToLowerInvariant();
             return types[ext];
         }
 
-        public static string GetFileName(string path)
+        public string GetFileName(string path)
         {
             return Path.GetFileName(path);
         }
 
-        private static Dictionary<string, string> GetMimeTypes()
+        private Dictionary<string, string> GetMimeTypes()
         {
             return new Dictionary<string, string>
             {

@@ -26,6 +26,17 @@
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="ClientApp\node_modules\reactjs-toastr\lib\toast.css" />
+    <Content Include="ClientApp\node_modules\reactjs-toastr\package.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="ClientApp\node_modules\reactjs-toastr\lib\index.js" />
+    <None Include="ClientApp\node_modules\reactjs-toastr\lib\react-toast.js" />
+    <None Include="ClientApp\node_modules\reactjs-toastr\README.md" />
+  </ItemGroup>
+
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">

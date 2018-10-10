@@ -7,9 +7,9 @@ using proOfficeTask.Models;
 
 namespace proOfficeTask.Helpers
 {
-    public static class DownloadHelper
+    public class DownloadHelper : IDownload
     {
-        public static async Task<MemoryStream> GetContent(string url)
+        public async Task<MemoryStream> GetContent(string url)
         {
             var client = new System.Net.WebClient();
 

@@ -28,11 +28,11 @@ export class NavMenu extends Component {
                                 <Glyphicon glyph='th-list' /> Fetch data
               </NavItem>
                         </LinkContainer>
-            <LinkContainer to={'/tableproduct'}>
-            <NavItem>
-            <Glyphicon glyph='th-list' /> Table Product
-            </NavItem>
-            </LinkContainer>
+                        <LinkContainer to={'/tableproduct'}>
+                            <NavItem>
+                                <Glyphicon glyph='th-list' /> Table Product
+              </NavItem>
+                        </LinkContainer>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

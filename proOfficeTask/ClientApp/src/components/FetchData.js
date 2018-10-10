@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import logo from "../assets/loading.gif";
 
 export class FetchData extends Component {
     displayName = FetchData.name
@@ -44,7 +45,7 @@ export class FetchData extends Component {
 
     render() {
         let contents = this.state.loading
-            ? <p><em>Loading...</em></p>
+            ? <div><img src={logo} alt="loading..." /></div>
             : FetchData.renderProductsTable(this.state.products);
 
         return (

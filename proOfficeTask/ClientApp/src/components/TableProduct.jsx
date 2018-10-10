@@ -1,7 +1,6 @@
 ﻿import React, { Component } from 'react';
 import TableRow from './TableRow';
-import logo from "./assets/loading.gif";
-
+import logo from "../assets/loading.gif";
 
 export class TableProduct extends Component {
     constructor(props) {
@@ -71,13 +70,13 @@ export class TableProduct extends Component {
     render() {
         let tableRows;
         if (this.state.loading) {
-            <p><img src={logo} alt="loading..." /></p> 
+            <div><img src={logo} alt="loading..." /></div>
         } else {
             if (this.state.products) {
                 tableRows = this.state.products.map(product => {
                     return (
                         <TableRow
-                            //onDownload={this.downloadDocument.bind(this)}
+                            //onDownload={this.downloadDocument.bind(this)}
                             key={product.idProduct}
                             product={product} />
                     )
