@@ -1,6 +1,4 @@
 ﻿import React, { Component } from 'react';
-import toastr from 'reactjs-toastr';
-import 'reactjs-toastr/lib/toast.css';
 
 
 class TableRow extends Component {
@@ -14,6 +12,7 @@ class TableRow extends Component {
                     console.log(response);
                     return response.blob();
                 } else {
+                  
                     //toastr.success('Success Message', 'Title', { displayDuration: 3000 });
                     console.log(response);
                     alert('Something went wrong...');
